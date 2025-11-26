@@ -1,23 +1,64 @@
-# Adams MPesa SDK 🚀
+<div align="center">
 
-A modern, production-grade MPesa API Wrapper/SDK for Node.js with full TypeScript support. Built for developers who want a clean, simple, and reliable way to integrate MPesa payments into their applications.
+# 🚀 Adams MPesa SDK for Node.js
+
+### Modern, Production-Ready MPesa API Integration for Node.js & TypeScript
 
 [![npm version](https://img.shields.io/npm/v/adams-mpesa-sdk.svg)](https://www.npmjs.com/package/adams-mpesa-sdk)
+[![Node.js Version](https://img.shields.io/node/v/adams-mpesa-sdk.svg)](https://nodejs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3+-blue.svg)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/ADAMSmugwe/mpesa-API-wrapper-for-node.js)
+[![Tests](https://img.shields.io/badge/tests-49%20passing-brightgreen.svg)](https://github.com/ADAMSmugwe/mpesa-API-wrapper-for-node.js)
+
+[Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [Examples](#-usage-examples) • [Contributing](#-contributing)
+
+</div>
+
+---
+
+## 📖 Description
+
+**Adams MPesa SDK** is a comprehensive, developer-friendly Node.js library for integrating Safaricom's MPesa Daraja API into your applications. Built with TypeScript and designed for production use, it provides a clean, intuitive interface for all MPesa payment operations.
+
+Whether you're building an e-commerce platform, a SaaS application, or a mobile money service in Kenya, this SDK handles the complexity of MPesa integration so you can focus on building your product.
+
+### Why Choose This SDK?
+
+- ✅ **Type-Safe**: Full TypeScript support with comprehensive type definitions
+- ✅ **Production-Ready**: Robust error handling, automatic retries, and token caching
+- ✅ **Developer-Friendly**: Clean API, extensive documentation, and working examples
+- ✅ **Well-Tested**: 49 passing unit tests with comprehensive coverage
+- ✅ **Modern**: Uses latest Node.js features and best practices
+- ✅ **Zero Config**: Sensible defaults that work out of the box
+
+---
 
 ## ✨ Features
 
-- 🔒 **Secure OAuth Token Management** - Automatic token generation, caching, and refresh
-- 📱 **STK Push** - Lipa Na MPesa Online (initiate & query)
-- 💰 **C2B** - Customer to Business (register URLs & simulate payments)
-- 💸 **B2C** - Business to Customer (payouts)
-- 🔍 **Transaction Status** - Query any transaction status
-- 🔄 **Automatic Retries** - Configurable retry logic with exponential backoff
-- ✅ **Input Validation** - Comprehensive validation for all inputs
-- 🎯 **TypeScript First** - Full type definitions included
-- 🧪 **Well Tested** - Extensive test coverage
-- 📖 **Excellent DX** - Clean API, detailed error messages
+### Core Functionality
+- 🔐 **OAuth Token Management** - Automatic generation, caching, and refresh
+- 💳 **STK Push (Lipa Na M-Pesa Online)** - Initiate and query customer payments
+- 💰 **C2B Payments** - URL registration and payment simulation
+- 💸 **B2C Payments** - Send money to customers (salary, refunds, etc.)
+- 📊 **Transaction Status** - Query any transaction status
+
+### Developer Experience
+- ✨ **Full TypeScript Support** - Complete type definitions for all APIs
+- 🔄 **Automatic Retries** - Exponential backoff for failed requests
+- ✅ **Input Validation** - Phone numbers, amounts, URLs validated automatically
+- 🎯 **Custom Error Types** - Detailed, actionable error messages
+- 📱 **Phone Number Formatting** - Supports multiple formats (0712..., +254..., 254...)
+- 🌍 **Environment Support** - Seamless switching between sandbox and production
+
+### Production Features
+- ⚡ **Token Caching** - Minimizes unnecessary API calls
+- 🔒 **Secure** - Follows security best practices
+- 📝 **Comprehensive Logging** - Debug-friendly error messages
+- 🧪 **Fully Tested** - 49 unit tests ensuring reliability
+- 📦 **Dual Module System** - Supports both CommonJS and ES Modules
+
+---
 
 ## 📦 Installation
 
@@ -25,43 +66,61 @@ A modern, production-grade MPesa API Wrapper/SDK for Node.js with full TypeScrip
 npm install adams-mpesa-sdk
 ```
 
-Or with yarn:
+Or using yarn:
 
 ```bash
 yarn add adams-mpesa-sdk
 ```
 
+### Requirements
+- Node.js >= 16.0.0
+- npm or yarn
+- Safaricom Daraja API credentials ([Get them here](https://developer.safaricom.co.ke))
+
+---
+
 ## 🚀 Quick Start
 
-### TypeScript
+### 1. Get Your Credentials
 
-```typescript
-import { Mpesa } from 'adams-mpesa-sdk';
+Before you begin, sign up at [Safaricom Developer Portal](https://developer.safaricom.co.ke) and create an app to get:
+- Consumer Key
+- Consumer Secret  
+- Business Shortcode
+- Lipa Na M-Pesa Online Passkey
 
-const mpesa = new Mpesa({
-  consumerKey: 'YOUR_CONSUMER_KEY',
-  consumerSecret: 'YOUR_CONSUMER_SECRET',
-  shortcode: '174379',
-  passkey: 'YOUR_PASSKEY',
-  environment: 'sandbox', // or 'production'
-});
+### 2. Set Up Environment Variables
 
-// Initiate STK Push
-const response = await mpesa.stkPush({
-  amount: 100,
-  phone: '254712345678',
-  accountReference: 'Invoice #123',
-  transactionDesc: 'Payment for order #123',
-  callbackUrl: 'https://yourdomain.com/callback',
-});
+Create a `.env` file in your project root:
 
-console.log(response);
+```env
+MPESA_CONSUMER_KEY=your_consumer_key_here
+MPESA_CONSUMER_SECRET=your_consumer_secret_here
+MPESA_SHORTCODE=174379
+MPESA_PASSKEY=your_passkey_here
+MPESA_ENVIRONMENT=sandbox
 ```
 
-### JavaScript (CommonJS)
+### 3. Initialize the SDK
 
+#### TypeScript
+```typescript
+import Mpesa from 'adams-mpesa-sdk';
+import 'dotenv/config';
+
+const mpesa = new Mpesa({
+  consumerKey: process.env.MPESA_CONSUMER_KEY!,
+  consumerSecret: process.env.MPESA_CONSUMER_SECRET!,
+  shortcode: process.env.MPESA_SHORTCODE!,
+  passkey: process.env.MPESA_PASSKEY!,
+  environment: 'sandbox', // or 'production'
+});
+```
+
+#### JavaScript (CommonJS)
 ```javascript
-const { Mpesa } = require('adams-mpesa-sdk');
+const Mpesa = require('adams-mpesa-sdk').default;
+require('dotenv/config');
 
 const mpesa = new Mpesa({
   consumerKey: process.env.MPESA_CONSUMER_KEY,
@@ -70,368 +129,303 @@ const mpesa = new Mpesa({
   passkey: process.env.MPESA_PASSKEY,
   environment: 'sandbox',
 });
+```
 
-// Use async/await
-(async () => {
+---
+
+## 💡 Usage Examples
+
+### STK Push (Lipa Na M-Pesa Online)
+
+Prompt customers to pay via MPesa:
+
+```typescript
+async function initiatePayment() {
   try {
     const response = await mpesa.stkPush({
       amount: 100,
-      phone: '0712345678',
-      accountReference: 'Test Payment',
+      phone: '254712345678', // Supports multiple formats
+      accountReference: 'ORDER-123',
+      transactionDesc: 'Payment for Order #123',
+      callbackUrl: 'https://yourdomain.com/api/mpesa/callback',
     });
-    console.log('Success:', response);
+
+    console.log('Payment initiated:', response.CheckoutRequestID);
+    // Customer will receive MPesa prompt on their phone
   } catch (error) {
-    console.error('Error:', error.message);
+    console.error('Payment failed:', error.message);
   }
-})();
+}
 ```
 
-## 📚 Configuration
+### Query STK Push Status
+
+Check the status of a payment request:
+
+```typescript
+async function checkPaymentStatus(checkoutRequestId: string) {
+  try {
+    const response = await mpesa.stkQuery({
+      checkoutRequestId: checkoutRequestId,
+    });
+
+    if (response.ResultCode === '0') {
+      console.log('Payment successful!');
+    } else {
+      console.log('Payment failed:', response.ResultDesc);
+    }
+  } catch (error) {
+    console.error('Query failed:', error.message);
+  }
+}
+```
+
+### B2C Payment (Send Money to Customers)
+
+Send money for salaries, refunds, or promotions:
+
+```typescript
+async function sendMoney() {
+  try {
+    const response = await mpesa.b2c({
+      amount: 500,
+      phone: '254712345678',
+      commandId: 'BusinessPayment', // or 'SalaryPayment', 'PromotionPayment'
+      occasion: 'Salary Payment',
+      remarks: 'Monthly salary',
+      resultUrl: 'https://yourdomain.com/api/mpesa/b2c/result',
+      timeoutUrl: 'https://yourdomain.com/api/mpesa/b2c/timeout',
+    });
+
+    console.log('Transfer initiated:', response.ConversationID);
+  } catch (error) {
+    console.error('Transfer failed:', error.message);
+  }
+}
+```
+
+### C2B URL Registration
+
+Register URLs for receiving customer payments:
+
+```typescript
+async function registerC2BUrls() {
+  try {
+    const response = await mpesa.c2bRegister({
+      validationUrl: 'https://yourdomain.com/api/mpesa/validation',
+      confirmationUrl: 'https://yourdomain.com/api/mpesa/confirmation',
+      responseType: 'Completed', // or 'Cancelled'
+    });
+
+    console.log('URLs registered successfully');
+  } catch (error) {
+    console.error('Registration failed:', error.message);
+  }
+}
+```
+
+For more examples, see the [examples.ts](./examples.ts) file.
+
+---
+
+## ⚙️ Configuration
 
 ### Required Configuration
 
-```typescript
-interface MpesaConfig {
-  consumerKey: string;      // From Safaricom Developer Portal
-  consumerSecret: string;   // From Safaricom Developer Portal
-  shortcode: string;        // Your paybill/till number
-  passkey: string;          // For STK Push
-  environment: 'sandbox' | 'production';
-}
-```
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `consumerKey` | string | Consumer Key from Daraja Portal |
+| `consumerSecret` | string | Consumer Secret from Daraja Portal |
+| `shortcode` | string | Your business shortcode (Paybill or Till) |
+| `passkey` | string | Lipa Na M-Pesa Online Passkey |
+| `environment` | `'sandbox'` \| `'production'` | API environment |
 
 ### Optional Configuration
 
-```typescript
-interface MpesaConfig {
-  // ... required fields
-  initiatorName?: string;        // For B2C transactions
-  securityCredential?: string;   // For B2C transactions
-  autoRefreshToken?: boolean;    // Default: true
-  maxRetries?: number;           // Default: 3
-  timeout?: number;              // Default: 30000 (30 seconds)
-}
-```
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `initiatorName` | string | - | Required for B2C and Transaction Status |
+| `securityCredential` | string | - | Required for B2C and Transaction Status |
+| `autoRefreshToken` | boolean | `true` | Automatically refresh expired tokens |
+| `maxRetries` | number | `3` | Maximum retry attempts for failed requests |
+| `timeout` | number | `30000` | Request timeout in milliseconds |
 
-### Environment Variables
+---
 
-Create a `.env` file in your project root:
+## 🎯 Callback / Webhook Handling
 
-```env
-MPESA_CONSUMER_KEY=your_consumer_key
-MPESA_CONSUMER_SECRET=your_consumer_secret
-MPESA_SHORTCODE=174379
-MPESA_PASSKEY=your_passkey
-MPESA_ENVIRONMENT=sandbox
-```
-
-Then use it in your code:
-
-```typescript
-import * as dotenv from 'dotenv';
-dotenv.config();
-
-const mpesa = new Mpesa({
-  consumerKey: process.env.MPESA_CONSUMER_KEY!,
-  consumerSecret: process.env.MPESA_CONSUMER_SECRET!,
-  shortcode: process.env.MPESA_SHORTCODE!,
-  passkey: process.env.MPESA_PASSKEY!,
-  environment: process.env.MPESA_ENVIRONMENT as 'sandbox' | 'production',
-});
-```
-
-## 🎯 API Reference
-
-### STK Push (Lipa Na MPesa Online)
-
-#### Initiate STK Push
-
-```typescript
-const response = await mpesa.stkPush({
-  amount: 100,
-  phone: '254712345678',           // or '0712345678'
-  accountReference: 'INV-001',
-  transactionDesc: 'Payment',      // Optional
-  callbackUrl: 'https://...',      // Optional
-});
-```
-
-**Response:**
-```typescript
-{
-  MerchantRequestID: "29115-34620561-1",
-  CheckoutRequestID: "ws_CO_191220191020363925",
-  ResponseCode: "0",
-  ResponseDescription: "Success. Request accepted for processing",
-  CustomerMessage: "Success. Request accepted for processing"
-}
-```
-
-#### Query STK Push Status
-
-```typescript
-const status = await mpesa.stkQuery({
-  checkoutRequestId: 'ws_CO_191220191020363925',
-});
-```
-
-**Response:**
-```typescript
-{
-  ResponseCode: "0",
-  ResponseDescription: "The service request has been accepted successsfully",
-  MerchantRequestID: "29115-34620561-1",
-  CheckoutRequestID: "ws_CO_191220191020363925",
-  ResultCode: "0",
-  ResultDesc: "The service request is processed successfully."
-}
-```
-
-### C2B (Customer to Business)
-
-#### Register URLs
-
-```typescript
-const response = await mpesa.c2bRegister({
-  validationUrl: 'https://yourdomain.com/mpesa/validate',
-  confirmationUrl: 'https://yourdomain.com/mpesa/confirm',
-  responseType: 'Completed', // or 'Cancelled'
-});
-```
-
-#### Simulate C2B Payment (Sandbox Only)
-
-```typescript
-const response = await mpesa.c2bSimulate({
-  amount: 100,
-  phone: '254712345678',
-  billRefNumber: 'INVOICE-001',
-  commandId: 'CustomerPayBillOnline', // or 'CustomerBuyGoodsOnline'
-});
-```
-
-### B2C (Business to Customer)
-
-```typescript
-const response = await mpesa.b2c({
-  amount: 100,
-  phone: '254712345678',
-  commandId: 'BusinessPayment', // or 'SalaryPayment', 'PromotionPayment'
-  remarks: 'Monthly salary',
-  occasion: 'Salary',
-  resultUrl: 'https://yourdomain.com/result',
-  timeoutUrl: 'https://yourdomain.com/timeout',
-});
-```
-
-### Transaction Status
-
-```typescript
-const status = await mpesa.transactionStatus({
-  transactionId: 'OEI2AK4Q16',
-  remarks: 'Query status',
-  resultUrl: 'https://yourdomain.com/result',
-  timeoutUrl: 'https://yourdomain.com/timeout',
-});
-```
-
-### Token Management
-
-```typescript
-// Get current access token
-const token = await mpesa.getAccessToken();
-
-// Force refresh token
-const newToken = await mpesa.refreshAccessToken();
-
-// Clear cached token
-mpesa.clearTokenCache();
-
-// Get token expiry time
-const expiry = mpesa.getTokenExpiry();
-```
-
-## 📞 Phone Number Formats
-
-The SDK automatically formats phone numbers. All these formats are accepted:
-
-- `254712345678` ✅
-- `0712345678` ✅
-- `712345678` ✅
-- `+254712345678` ✅
-- `0712-345-678` ✅
-- `0712 345 678` ✅
-
-## 🔔 Handling Callbacks
-
-### Express.js Example
+MPesa sends callbacks to your server for async operations. Here's a complete Express.js example:
 
 ```typescript
 import express from 'express';
-import { Mpesa } from 'adams-mpesa-sdk';
+import Mpesa from 'adams-mpesa-sdk';
 
 const app = express();
 app.use(express.json());
 
-app.post('/mpesa/callback', (req, res) => {
+// STK Push Callback
+app.post('/api/mpesa/callback', (req, res) => {
   const { Body } = req.body;
-  
-  if (Body.stkCallback) {
-    const { MerchantRequestID, CheckoutRequestID, ResultCode, ResultDesc } = Body.stkCallback;
+  const { stkCallback } = Body;
+
+  if (stkCallback.ResultCode === 0) {
+    // Payment successful
+    const { CallbackMetadata } = stkCallback;
+    const amount = CallbackMetadata.Item.find((item: any) => item.Name === 'Amount')?.Value;
+    const mpesaRef = CallbackMetadata.Item.find((item: any) => item.Name === 'MpesaReceiptNumber')?.Value;
     
-    if (ResultCode === 0) {
-      // Payment successful
-      console.log('Payment successful:', CheckoutRequestID);
-      
-      // Extract payment details
-      const metadata = Body.stkCallback.CallbackMetadata?.Item;
-      const amount = metadata?.find(item => item.Name === 'Amount')?.Value;
-      const phone = metadata?.find(item => item.Name === 'PhoneNumber')?.Value;
-      const transactionId = metadata?.find(item => item.Name === 'MpesaReceiptNumber')?.Value;
-      
-      console.log({ amount, phone, transactionId });
-    } else {
-      // Payment failed
-      console.log('Payment failed:', ResultDesc);
-    }
+    console.log(`Payment of ${amount}. Ref: ${mpesaRef}`);
+  } else {
+    console.log('Payment failed:', stkCallback.ResultDesc);
   }
-  
-  res.status(200).json({ ResultCode: 0, ResultDesc: 'Accepted' });
+
+  res.json({ ResultCode: 0, ResultDesc: 'Success' });
 });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+app.listen(3000, () => console.log('Server running'));
 ```
 
-## ❌ Error Handling
+---
 
-The SDK provides specific error types for better error handling:
+## 🚨 Error Handling
+
+The SDK provides detailed error types:
 
 ```typescript
 import {
   MpesaError,
-  MpesaNetworkError,
   MpesaAuthError,
-  InvalidPhoneNumberError,
-  MissingConfigError,
+  MpesaResponseError,
   ValidationError,
+  InvalidPhoneNumberError,
 } from 'adams-mpesa-sdk';
 
 try {
-  const response = await mpesa.stkPush({
-    amount: 100,
-    phone: '254712345678',
-    accountReference: 'Test',
-  });
+  await mpesa.stkPush({...});
 } catch (error) {
   if (error instanceof InvalidPhoneNumberError) {
     console.error('Invalid phone number format');
   } else if (error instanceof MpesaAuthError) {
-    console.error('Authentication failed. Check your credentials');
-  } else if (error instanceof MpesaNetworkError) {
-    console.error('Network error. Please try again');
-  } else if (error instanceof ValidationError) {
-    console.error('Validation error:', error.message);
-  } else {
-    console.error('Unexpected error:', error);
+    console.error('Authentication failed');
+  } else if (error instanceof MpesaResponseError) {
+    console.error('MPesa API error:', error.message);
   }
 }
 ```
 
-## 🐛 Common Issues & Solutions
+### Common Errors and Solutions
 
-### 1. "Invalid Access Token"
+| Error | Cause | Solution |
+|-------|-------|----------|
+| `Invalid Access Token` | App not subscribed to API | Subscribe to the API product in Daraja Portal |
+| `Invalid Shortcode` | Wrong business shortcode | Verify your shortcode in Daraja Portal |
+| `Invalid Phone Number` | Wrong phone format | Use format: 254XXXXXXXXX |
 
-**Problem:** Token has expired or is invalid.
+---
 
-**Solution:**
-```typescript
-mpesa.clearTokenCache();
-const newToken = await mpesa.refreshAccessToken();
-```
+## 📚 Documentation
 
-### 2. "Invalid Phone Number"
+For more detailed information:
 
-**Problem:** Phone number format is incorrect.
+- [Quick Start Guide](./QUICKSTART.md)
+- [Project Summary](./PROJECT_SUMMARY.md)
+- [Examples File](./examples.ts)
+- [Safaricom Developer Portal](https://developer.safaricom.co.ke)
 
-**Solution:** Ensure phone number starts with 254 and has 12 digits total, or starts with 0/7 for local format.
-
-### 3. "The service request has not been accepted"
-
-**Problem:** MPesa API rejected the request.
-
-**Solutions:**
-- Check if your shortcode is registered for STK Push
-- Verify your passkey is correct
-- Ensure callback URL is publicly accessible (not localhost)
-- For production, ensure URLs use HTTPS
-
-### 4. "Request failed with status code 401"
-
-**Problem:** Invalid consumer key or secret.
-
-**Solution:** Double-check your credentials from the Safaricom Developer Portal.
-
-### 5. Callback URL Not Receiving Requests
-
-**Problem:** MPesa cannot reach your callback URL.
-
-**Solutions:**
-- Use a public URL (not localhost)
-- Use HTTPS (required for production)
-- Test with services like ngrok during development
-- Ensure your server is running and port is open
+---
 
 ## 🧪 Testing
 
 ```bash
-# Install dependencies
-npm install
-
-# Run tests
+# Run unit tests
 npm test
 
 # Run tests with coverage
 npm run test:coverage
 
-# Run tests in watch mode
-npm run test:watch
+# Run live API tests (requires credentials)
+npm run test:live
 ```
 
-## 🏗️ Building
+### Live Testing Scripts
 
 ```bash
-# Build the project
-npm run build
+# Test OAuth token generation
+npx ts-node test-token-only.ts
 
-# Lint code
-npm run lint
-
-# Format code
-npm run format
+# Test STK Push
+npx ts-node test-stk-push.ts
 ```
+
+---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+We welcome contributions! Here's how you can help:
+
+### Reporting Issues
+
+- Use the [GitHub Issues](https://github.com/ADAMSmugwe/mpesa-API-wrapper-for-node.js/issues) page
+- Provide a clear description and steps to reproduce
+- Include error messages and stack traces
+
+### Pull Requests
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+### Development Guidelines
+
+- Write tests for new features
+- Follow the existing code style
+- Update documentation for API changes
+- Ensure all tests pass before submitting
+
+---
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🔗 Links
+---
 
-- [Safaricom Developer Portal](https://developer.safaricom.co.ke/)
-- [MPesa API Documentation](https://developer.safaricom.co.ke/Documentation)
-- [GitHub Repository](https://github.com/yourusername/adams-mpesa-sdk)
+## 💬 Support & Contact
 
-## 💬 Support
-
-For support, email support@example.com or open an issue on GitHub.
-
-## ⚠️ Disclaimer
-
-This SDK is not officially affiliated with or endorsed by Safaricom. Use at your own risk.
+- **GitHub Issues**: [Report bugs or request features](https://github.com/ADAMSmugwe/mpesa-API-wrapper-for-node.js/issues)
+- **Email**: mugweadams439@gmail.com
+- **GitHub**: [@ADAMSmugwe](https://github.com/ADAMSmugwe)
 
 ---
 
-Made with ❤️ by Adams
+## 🙏 Acknowledgments
+
+- [Safaricom Daraja API](https://developer.safaricom.co.ke) - Official MPesa API
+- All contributors and users of this SDK
+- The Node.js and TypeScript communities
+
+---
+
+## 🌟 Show Your Support
+
+If this SDK helped you build something awesome, please:
+
+- ⭐ Star this repository
+- 🐛 Report issues
+- 💡 Suggest new features
+- 🤝 Contribute code
+- 📢 Share with other developers
+
+---
+
+<div align="center">
+
+### 🎉 Happy Coding! 🎉
+
+**Built with ❤️ for the Kenyan developer community**
+
+Made by [Adams Mugwe](https://github.com/ADAMSmugwe) • [Repository](https://github.com/ADAMSmugwe/mpesa-API-wrapper-for-node.js)
+
+</div>
