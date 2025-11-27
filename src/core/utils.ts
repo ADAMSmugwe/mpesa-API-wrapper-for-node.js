@@ -111,3 +111,46 @@ export function parseCallbackMetadata(
   
   return metadata;
 }
+
+export function validateKenyanPhoneNumber(phone: string): boolean {
+  const cleaned = phone.replace(/\D/g, '');
+  return /^254[17]\d{8}$/.test(cleaned);
+}
+
+export function validateRequiredFields(data: Record<string, any>, requiredFields: string[]): void {
+  const missingFields: string[] = [];
+  
+  for (const field of requiredFields) {
+    if (data[field] === undefined || data[field] === null || data[field] === '') {
+      missingFields.push(field);
+    }
+  }
+  
+  if (missingFields.length > 0) {
+    throw new Error(`Missing required fields: ${missingFields.join(', ')}`);
+  }
+}
+
+export function validatePositiveAmount(amount: number, fieldName: string = 'amount'): void {
+  if (!Number.isFinite(amount)) {
+    throw new Error(`${fieldName} must be a valid number`);
+  }
+  
+  if (amount <= 0) {
+    throw new Error(`${fieldName} must be a positive number`);
+  }
+  
+  if (!Number.isInteger(amount)) {
+    throw new Error(`${fieldName} must be a whole number (no decimals)`);
+  }
+}
+
+export function validateShortcode(shortcode: string): void {
+  if (!shortcode || typeof shortcode !== 'string') {
+    throw new Error('Shortcode is required and must be a string');
+  }
+  
+  if (!/^\d{5,7}$/.test(shortcode)) {
+    throw new Error('Shortcode must be 5-7 digits');
+  }
+}
