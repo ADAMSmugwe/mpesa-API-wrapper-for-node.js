@@ -134,6 +134,7 @@ export class Mpesa {
 export * from './core/types';
 export * from './core/errors';
 export * from './core/utils';
+export * from './core/token-storage';
 export * from './middleware/callback';
 
 export default Mpesa;

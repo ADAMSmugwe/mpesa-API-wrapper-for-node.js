@@ -647,6 +647,211 @@ For more detailed information:
 
 ---
 
+## 🧪 Testing Guide
+
+### Testing With Safaricom Sandbox
+
+The SDK works seamlessly with both sandbox and production environments. Here's how to test without a real phone:
+
+#### 1. Get Sandbox Credentials
+
+1. Visit [Safaricom Developer Portal](https://developer.safaricom.co.ke)
+2. Create an account and log in
+3. Create a new app
+4. Subscribe to the following APIs:
+   - **Lipa Na M-Pesa Online** (for STK Push)
+   - **M-Pesa C2B** (for Customer to Business)
+   - **M-Pesa B2C** (for Business to Customer)
+5. Get your credentials from the app dashboard:
+   - Consumer Key
+   - Consumer Secret
+   - Test Credentials (shortcode, passkey, etc.)
+
+#### 2. Sandbox Test Credentials
+
+Safaricom provides these test credentials for sandbox:
+
+```env
+MPESA_CONSUMER_KEY=your_app_consumer_key
+MPESA_CONSUMER_SECRET=your_app_consumer_secret
+MPESA_SHORTCODE=174379
+MPESA_PASSKEY=bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919
+MPESA_ENVIRONMENT=sandbox
+```
+
+#### 3. Testing STK Push
+
+```typescript
+import Mpesa from 'adams-mpesa-sdk';
+
+const mpesa = new Mpesa({
+  consumerKey: process.env.MPESA_CONSUMER_KEY!,
+  consumerSecret: process.env.MPESA_CONSUMER_SECRET!,
+  shortcode: '174379', // Sandbox shortcode
+  passkey: 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919',
+  environment: 'sandbox',
+});
+
+// Test STK Push
+const response = await mpesa.stkPush({
+  amount: 1,
+  phone: '254708374149', // Use any Kenyan number in sandbox
+  accountReference: 'TEST-001',
+  transactionDesc: 'Test Payment',
+});
+
+console.log('Checkout Request ID:', response.CheckoutRequestID);
+```
+
+#### 4. Simulating Payment in Sandbox
+
+In sandbox mode, you can simulate payment responses without a real phone:
+
+**Option A: Use the C2B Simulator**
+1. Go to Safaricom Developer Portal
+2. Navigate to APIs → M-Pesa Sandbox
+3. Use the "C2B Simulate Transaction" tool
+
+**Option B: Programmatically simulate**
+```typescript
+// Simulate C2B payment
+await mpesa.c2bSimulate({
+  amount: 100,
+  phone: '254708374149',
+  billRefNumber: 'TEST-REF',
+  commandId: 'CustomerPayBillOnline',
+});
+```
+
+#### 5. Testing Callbacks Locally
+
+Use **ngrok** to expose your local server for callback testing:
+
+```bash
+# Install ngrok
+npm install -g ngrok
+
+# Start your local server
+npm start
+
+# In another terminal, start ngrok
+ngrok http 3000
+```
+
+Update your `.env` with the ngrok URL:
+```env
+MPESA_CALLBACK_URL=https://your-ngrok-url.ngrok.io/api/mpesa/callback
+```
+
+#### 6. Unit Testing Your Integration
+
+Example test using Jest:
+
+```typescript
+import Mpesa from 'adams-mpesa-sdk';
+
+describe('MPesa Integration', () => {
+  let mpesa: Mpesa;
+
+  beforeAll(() => {
+    mpesa = new Mpesa({
+      consumerKey: process.env.MPESA_CONSUMER_KEY!,
+      consumerSecret: process.env.MPESA_CONSUMER_SECRET!,
+      shortcode: process.env.MPESA_SHORTCODE!,
+      passkey: process.env.MPESA_PASSKEY!,
+      environment: 'sandbox',
+    });
+  });
+
+  it('should generate access token', async () => {
+    const token = await mpesa.getAccessToken();
+    expect(token).toBeDefined();
+    expect(token.length).toBeGreaterThan(0);
+  });
+
+  it('should initiate STK push', async () => {
+    const response = await mpesa.stkPush({
+      amount: 1,
+      phone: '254708374149',
+      accountReference: 'TEST',
+      transactionDesc: 'Test',
+    });
+
+    expect(response.ResponseCode).toBe('0');
+    expect(response.CheckoutRequestID).toBeDefined();
+  });
+
+  it('should query STK push status', async () => {
+    const stkResponse = await mpesa.stkPush({
+      amount: 1,
+      phone: '254708374149',
+      accountReference: 'TEST',
+      transactionDesc: 'Test',
+    });
+
+    const queryResponse = await mpesa.stkQuery({
+      checkoutRequestId: stkResponse.CheckoutRequestID,
+    });
+
+    expect(queryResponse.ResultCode).toBeDefined();
+  });
+});
+```
+
+#### 7. Moving to Production
+
+When ready for production:
+
+1. **Update credentials**:
+   ```env
+   MPESA_ENVIRONMENT=production
+   MPESA_SHORTCODE=your_production_shortcode
+   MPESA_PASSKEY=your_production_passkey
+   ```
+
+2. **Use HTTPS for callbacks**:
+   - Safaricom requires HTTPS URLs in production
+   - Ensure your callback URLs are publicly accessible
+   - Use a valid SSL certificate
+
+3. **Update callback URLs**:
+   ```env
+   MPESA_CALLBACK_URL=https://yourdomain.com/api/mpesa/callback
+   MPESA_RESULT_URL=https://yourdomain.com/api/mpesa/result
+   ```
+
+4. **Test with real transactions**:
+   - Start with small amounts (KES 1-10)
+   - Test with your own phone number first
+   - Verify callbacks are received correctly
+
+#### 8. Common Sandbox Issues
+
+| Issue | Solution |
+|-------|----------|
+| "Invalid Access Token" | Ensure you've subscribed to the API in the developer portal |
+| "Invalid Shortcode" | Use `174379` for sandbox STK Push |
+| "Request failed" | Check your consumer key and secret are correct |
+| "Callback not received" | Ensure your callback URL is publicly accessible (use ngrok) |
+
+#### 9. Testing Checklist
+
+Before going live, test these scenarios:
+
+- ✅ OAuth token generation
+- ✅ STK Push initiation
+- ✅ STK Push query
+- ✅ Successful payment callback
+- ✅ Failed payment callback
+- ✅ Timeout handling
+- ✅ Network error handling
+- ✅ Invalid phone number handling
+- ✅ Invalid amount handling
+- ✅ C2B URL registration (if using C2B)
+- ✅ B2C payment (if using B2C)
+
+---
+
 ## 📚 Examples
 
 The `/examples` folder contains complete working examples:

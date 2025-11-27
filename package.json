@@ -13,10 +13,15 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "bin"
   ],
+  "bin": {
+    "mpesa-cli": "./bin/cli.js"
+  },
   "scripts": {
-    "build": "tsc && node build.js",
+    "build": "tsc && node build.js && npm run build:cli",
+    "build:cli": "tsc bin/cli.ts --outDir bin --module commonjs --target es2020 --esModuleInterop --resolveJsonModule && echo '#!/usr/bin/env node' | cat - bin/cli.js > bin/cli.tmp.js && mv bin/cli.tmp.js bin/cli.js && chmod +x bin/cli.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -62,6 +67,8 @@
   },
   "dependencies": {
     "axios": "^1.6.5",
+    "chalk": "^5.6.2",
+    "commander": "^14.0.2",
     "dotenv": "^16.6.1",
     "zod": "^3.22.4"
   },

@@ -65,6 +65,32 @@ Comprehensive error handling strategies:
 npx ts-node examples/error-handling.ts
 ```
 
+### 4. NestJS Integration (`nestjs-integration.ts`)
+
+Complete NestJS module for MPesa:
+- MPesa service wrapper
+- RESTful controllers
+- Dependency injection
+- ConfigModule integration
+
+**Setup:**
+```bash
+npm install @nestjs/common @nestjs/config
+```
+
+### 5. Next.js Integration (`nextjs-integration.ts`)
+
+Next.js 14+ App Router integration:
+- API routes for payments
+- Server-side MPesa instance
+- Client component example
+- Callback handling
+
+**Setup:**
+```bash
+npm install next
+```
+
 ## Example Request/Response
 
 ### Initiate Payment
