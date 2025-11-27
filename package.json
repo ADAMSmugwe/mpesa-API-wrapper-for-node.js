@@ -1,6 +1,6 @@
 {
   "name": "adams-mpesa-sdk",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A modern, production-grade MPesa API Wrapper/SDK for Node.js with TypeScript support",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

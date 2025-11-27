@@ -5,6 +5,58 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-11-27
+
+### Added
+
+#### CLI Tool
+- 🖥️ **Command-line interface** (`mpesa-cli`) for testing and interacting with MPesa API
+- Commands: `stk-push`, `stk-query`, `c2b-register`, `b2c`, `token`, `config`
+- Global installation support: `npm install -g adams-mpesa-sdk`
+- Works with `.env` files for configuration
+- Colored output and detailed error messages
+
+#### Token Storage Adapters
+- 🔐 **MemoryTokenStorage** - In-memory storage (default)
+- 🔐 **RedisTokenStorage** - Distributed token storage with Redis
+- 🔐 **FileTokenStorage** - File-based storage for development
+- 🔐 **MongoDBTokenStorage** - Database persistence with MongoDB
+- 🔐 **TokenStorage** interface for custom implementations
+- Support for distributed systems and multiple server instances
+
+#### Webhook Queue Processing
+- ⚡ **MpesaWebhookQueue** - BullMQ-based async webhook processing
+- Automatic retries with exponential backoff
+- Priority-based job processing
+- Queue statistics and monitoring
+- Express middleware integration (`mpesaQueueMiddleware`)
+- Scalable handling of high-volume callbacks
+
+#### Framework Integrations
+- 🎯 **NestJS** - Complete module with dependency injection and controllers
+- 🎯 **Next.js 14+** - App Router integration with API routes
+- TypeScript examples for both frameworks
+- Production-ready implementations
+
+#### Documentation
+- 📚 **Testing Guide** - Comprehensive guide for testing with Safaricom sandbox
+- 📚 **ADVANCED_FEATURES.md** - Detailed guide for advanced features
+- 📚 **ANNOUNCEMENT.md** - Social media templates and marketing guide
+- Updated examples README with new integrations
+
+### Changed
+- 📦 Added `commander` and `chalk` dependencies for CLI
+- 📦 Updated `package.json` with `bin` entry for CLI tool
+- 📦 Excluded optional queue files from TypeScript compilation
+- 📝 Enhanced README with npm download and bundle size badges
+- 📝 Expanded examples folder with NestJS and Next.js integrations
+
+### Technical
+- Exported token storage adapters from main index
+- Added build script for CLI compilation
+- Updated tsconfig to exclude optional dependencies
+- Improved package structure for global CLI installation
+
 ## [1.0.0] - 2025-11-27
 
 ### Added
@@ -50,7 +102,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - API configuration reference
 - Error handling guide
 - Security best practices
-- Callback/webhook handling guide
-- Testing guide
+  - Callback/webhook handling guide
+  - Testing guide
 
+[1.1.0]: https://github.com/ADAMSmugwe/mpesa-API-wrapper-for-node.js/releases/tag/v1.1.0
 [1.0.0]: https://github.com/ADAMSmugwe/mpesa-API-wrapper-for-node.js/releases/tag/v1.0.0
