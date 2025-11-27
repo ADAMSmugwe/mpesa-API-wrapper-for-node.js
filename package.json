@@ -38,7 +38,11 @@
     "typescript",
     "sdk"
   ],
-  "author": "Adams",
+  "author": {
+    "name": "Adams Mugwe",
+    "email": "mugweadams439@gmail.com",
+    "url": "https://github.com/ADAMSmugwe"
+  },
   "license": "MIT",
   "devDependencies": {
     "@types/express": "^5.0.5",
@@ -66,10 +70,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/adams-mpesa-sdk.git"
+    "url": "git+https://github.com/ADAMSmugwe/mpesa-API-wrapper-for-node.js.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/adams-mpesa-sdk/issues"
+    "url": "https://github.com/ADAMSmugwe/mpesa-API-wrapper-for-node.js/issues"
   },
-  "homepage": "https://github.com/yourusername/adams-mpesa-sdk#readme"
+  "homepage": "https://github.com/ADAMSmugwe/mpesa-API-wrapper-for-node.js#readme"
 }
