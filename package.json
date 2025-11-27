@@ -21,7 +21,7 @@
   },
   "scripts": {
     "build": "tsc && node build.js && npm run build:cli",
-    "build:cli": "tsc bin/cli.ts --outDir bin --module commonjs --target es2020 --esModuleInterop --resolveJsonModule && echo '#!/usr/bin/env node' | cat - bin/cli.js > bin/cli.tmp.js && mv bin/cli.tmp.js bin/cli.js && chmod +x bin/cli.js",
+    "build:cli": "node build-cli.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
