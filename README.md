@@ -5,6 +5,8 @@
 ### Modern, Production-Ready MPesa API Integration for Node.js & TypeScript
 
 [![npm version](https://img.shields.io/npm/v/adams-mpesa-sdk.svg)](https://www.npmjs.com/package/adams-mpesa-sdk)
+[![npm downloads](https://img.shields.io/npm/dm/adams-mpesa-sdk.svg)](https://www.npmjs.com/package/adams-mpesa-sdk)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/adams-mpesa-sdk)](https://bundlephobia.com/package/adams-mpesa-sdk)
 [![Node.js Version](https://img.shields.io/node/v/adams-mpesa-sdk.svg)](https://nodejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3+-blue.svg)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
