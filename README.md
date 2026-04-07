@@ -990,6 +990,6 @@ If this SDK helped you build something awesome, please:
 
 **Built with ❤️ for the Kenyan developer community**
 
-Made by [Adams Mugwe](https://github.com/ADAMSmugwe) • [Repository](https://github.com/ADAMSmugwe/mpesa-API-wrapper-for-node.js)
+
 
 </div>
