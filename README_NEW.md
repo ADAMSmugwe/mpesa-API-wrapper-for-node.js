@@ -2,7 +2,7 @@
 
 # 🚀 Adams MPesa SDK for Node.js
 
-### Modern, Production-Ready MPesa API Integration for Node.js & TypeScript
+### Modern, Production-Ready MPesa API Integration for Node.js & TypeScript.
 
 [![npm version](https://img.shields.io/npm/v/adams-mpesa-sdk.svg)](https://www.npmjs.com/package/adams-mpesa-sdk)
 [![Node.js Version](https://img.shields.io/node/v/adams-mpesa-sdk.svg)](https://nodejs.org)
