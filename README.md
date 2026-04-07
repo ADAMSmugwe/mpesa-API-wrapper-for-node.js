@@ -1,6 +1,6 @@
 <div align="center">
 
-# MPesa SDK for Node.js
+# MPesa SDK for Node.js.
 
 ### Modern, Production-Ready MPesa API Integration for Node.js & TypeScript
 
